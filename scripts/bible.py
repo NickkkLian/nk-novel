@@ -224,7 +224,10 @@ footer{{position:relative;z-index:1;background:var(--anchor);color:var(--on-anch
     document.querySelectorAll('input[name="' + group + '"]').forEach(function (el) {{
       var key = group === 'nl-theme' ? 'theme' : 'scheme';
       if (el.value === get()[key]) el.checked = true;
-      el.addEventListener('change', function () {{ if (el.checked) {{ var o = {{}}; o[key] = el.value; set(o); }} }});
+      /* click as well as change: after a ?theme= link the shown radio can already be checked, and choosing it must still save */
+      ['change', 'click'].forEach(function (type) {{
+        el.addEventListener(type, function () {{ if (el.checked) {{ var o = {{}}; o[key] = el.value; set(o); }} }});
+      }});
     }});
   }});
   syncMeta();
@@ -300,6 +303,7 @@ def selftest():
     radios = re.findall(r'<input type="radio" name="(nl-theme|nl-scheme)" value="(\w+)"( checked)?>', page)
     chk([(g, v) for g, v, _ in radios] == [("nl-theme", "plaster"), ("nl-theme", "paper"), ("nl-theme", "ink"), ("nl-scheme", "system"), ("nl-scheme", "light"), ("nl-scheme", "dark")]
         and [v for g, v, c in radios if c] == ["plaster", "system"], "T20 picker: Plaster/Paper/Ink and System/Light/Dark, defaults Plaster and System")
+    chk("['change', 'click'].forEach" in page, "T22 a theme choice is saved on click as well as change (a radio already checked by ?theme= fires no change)")
     tmp = tempfile.mkdtemp(prefix="bible_selftest_")
     sp, out = os.path.join(tmp, "story.json"), os.path.join(tmp, "bible.html")
     json.dump(s, open(sp, "w", encoding="utf-8"))
