@@ -1,0 +1,19 @@
+{
+  "name": "nk-novel",
+  "description": "Turn one story idea into a staged novel plan that holds together, plus a one-page visual story bible.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Nick Lian",
+    "url": "https://github.com/NickkkLian"
+  },
+  "homepage": "https://github.com/NickkkLian/nk-novel",
+  "repository": "https://github.com/NickkkLian/nk-novel",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agent-skills",
+    "writing",
+    "fiction",
+    "story"
+  ]
+}
